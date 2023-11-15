@@ -165,8 +165,6 @@ public class Application
         });
         // App icon.
         mFrame.setIconImage(mIcon);
-        // Show on top.
-        mFrame.setAlwaysOnTop(true);
         // Auto-exit when closing app.
         mFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Center app.
