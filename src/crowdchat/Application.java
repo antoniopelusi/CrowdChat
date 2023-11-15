@@ -96,11 +96,11 @@ public class Application
         StyleConstants.setFontSize(ATTR_BOLD, (int) convertFontSizeForWindows(20D));
         // Italic.
         StyleConstants.setItalic(ATTR_ITALIC, true);
-        StyleConstants.setForeground(ATTR_ITALIC, new Color(170, 170, 170));
+        StyleConstants.setForeground(ATTR_ITALIC, new Color(150, 150, 150));
         StyleConstants.setFontSize(ATTR_ITALIC, (int) convertFontSizeForWindows(20D));
         // Error.
         StyleConstants.setBold(ATTR_ERROR, true);
-        StyleConstants.setForeground(ATTR_ERROR, new Color(250, 65, 65));
+        StyleConstants.setForeground(ATTR_ERROR, new Color(110, 25, 25));
         StyleConstants.setFontSize(ATTR_ERROR, (int) convertFontSizeForWindows(20D));
         // Server.
         StyleConstants.setBold(ATTR_SERVER, true);
@@ -131,11 +131,12 @@ public class Application
         UIManager.put("Label.foreground", new Color(225, 225, 225));
         UIManager.put("Button.background", new Color(60, 60, 60));
         UIManager.put("Button.foreground", new Color(225, 225, 225));
-        UIManager.put("TextField.background", new Color(30, 30, 30));
+        UIManager.put("Button.border", new EmptyBorder(5, 5, 5, 5));
+        UIManager.put("TextField.background", new Color(20, 20, 20));
         UIManager.put("TextField.foreground", new Color(225, 225, 225));
+        UIManager.put("TextField.border", new EmptyBorder(5, 5, 5, 5));
         UIManager.put("OptionPane.background",new ColorUIResource(30, 30, 30));
         UIManager.put("OptionPane.foreground",new ColorUIResource(225, 225, 225));
-
     }
 
     private void createFrame()
@@ -246,17 +247,20 @@ public class Application
         mChatArea.setMargin(new Insets(20, 20, 20, 20));
         mChatArea.setFont(new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(20D)));
         mChatArea.setEditable(false);
-        mChatArea.setBackground(new Color(30, 30, 30));
+        mChatArea.setBackground(new Color(20, 20, 20));
         mChatArea.setForeground(new Color(225, 225, 225));
+        mChatArea.setBorder(BorderFactory.createLineBorder(new Color(20, 20, 20), 10));
+
         addToChat("Welcome on CrowdChat.\n" +
                 "You can log in using the button at the bottom left.\n\n",
                 ATTR_ITALIC); 
 
         JScrollPane scrollPane = new JScrollPane(mChatArea);
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(20, 20, 20), 10));
 
         JPanel panel = new JPanel(new BorderLayout());
-        panel.setBorder(new EmptyBorder(40, 20, 40, 40));
-        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.setBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 30));
+        panel.add(scrollPane);
 
         return panel;
     }
@@ -271,14 +275,16 @@ public class Application
         textField.setMargin(new Insets(20, 20, 20, 20));
         textField.setFont(new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(20D)));
         textField.addActionListener(onSendInput(textField));
-        textField.setBackground(new Color(30, 30, 30));
+        textField.setBackground(new Color(20, 20, 20));
         textField.setForeground(new Color(225, 225, 225));
+        textField.setBorder(new EmptyBorder(10, 10, 10, 10));
         // Send button.
         JButton button = new JButton("SEND");
         button.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(20D)));
         button.addActionListener(onSendInput(textField));
         button.setBackground(new Color(60, 60, 60));
         button.setForeground(new Color(225, 225, 225));
+        button.setBorder(new EmptyBorder(10, 10, 10, 10));
 
         // User input
         GridBagConstraints constraints1 = new GridBagConstraints();
@@ -375,12 +381,14 @@ public class Application
         JScrollPane scrollPane = new JScrollPane(list);
 
         JPanel panel = new JPanel(new BorderLayout());
-        list.setBackground(new Color(30, 30, 30));
+        list.setBackground(new Color(20, 20, 20));
         list.setForeground(new Color(225, 225, 225));
-        scrollPane.setBackground(new Color(30, 30, 30));
+        scrollPane.setBackground(new Color(20, 20, 20));
         scrollPane.setForeground(new Color(225, 225, 225));
+        scrollPane.setBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 10));
+        
 
-        panel.setBorder(new EmptyBorder(40, 40, 20, 20));
+        panel.setBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 10));
         panel.add(panel_, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
         
@@ -403,12 +411,14 @@ public class Application
         button1.setEnabled(true);
         button1.setBackground(new Color(60, 60, 60));
         button1.setForeground(new Color(225, 225, 225));
+        button1.setBorder(new EmptyBorder(10, 10, 10, 10));
         // Disconnect button.
         button2.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(20D)));
         button2.addActionListener(onDisconnection(button1, button2));
         button2.setEnabled(false);
         button2.setBackground(new Color(30, 30, 30));
         button2.setForeground(new Color(225, 225, 225));
+        button2.setBorder(new EmptyBorder(10, 10, 10, 10));
         // Connect button.
         GridBagConstraints constraints1 = new GridBagConstraints();
         constraints1.weightx = 0.5;
@@ -474,8 +484,8 @@ public class Application
             mClient.disconnect();
             connectButton.setEnabled(true);
             disconnectButton.setEnabled(false);
-            connectButton.setBackground(new Color(30, 30, 30));
-            disconnectButton.setBackground(new Color(60, 60, 60));
+            connectButton.setBackground(new Color(60, 60, 60));
+            disconnectButton.setBackground(new Color(30, 30, 30));
         };
     }
 

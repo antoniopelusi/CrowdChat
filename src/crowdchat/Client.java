@@ -301,7 +301,7 @@ public interface Client extends Remote
         @Override
         public void writeMessage(String time, String sender, String message) throws RemoteException
         {
-            mApp.addToChat("(" + time + ") ", Application.ATTR_BOLD);
+            mApp.addToChat("(" + time + ") ", Application.ATTR_ITALIC);
             mApp.addToChat(sender + ": ", Application.ATTR_BOLD);
             mApp.addToChat(message, Application.ATTR_PLAIN);
         }
