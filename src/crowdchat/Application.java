@@ -3,6 +3,7 @@ package crowdchat;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -91,17 +92,20 @@ public class Application
     {
         // Bold.
         StyleConstants.setBold(ATTR_BOLD, true);
-        StyleConstants.setFontSize(ATTR_BOLD, (int) convertFontSizeForWindows(25D));
+        StyleConstants.setForeground(ATTR_BOLD, new Color(140, 140, 140));
+        StyleConstants.setFontSize(ATTR_BOLD, (int) convertFontSizeForWindows(20D));
         // Italic.
         StyleConstants.setItalic(ATTR_ITALIC, true);
-        StyleConstants.setFontSize(ATTR_ITALIC, (int) convertFontSizeForWindows(25D));
+        StyleConstants.setForeground(ATTR_ITALIC, new Color(170, 170, 170));
+        StyleConstants.setFontSize(ATTR_ITALIC, (int) convertFontSizeForWindows(20D));
         // Error.
         StyleConstants.setBold(ATTR_ERROR, true);
-        StyleConstants.setForeground(ATTR_ERROR, Color.red);
-        StyleConstants.setFontSize(ATTR_ERROR, (int) convertFontSizeForWindows(25D));
+        StyleConstants.setForeground(ATTR_ERROR, new Color(250, 65, 65));
+        StyleConstants.setFontSize(ATTR_ERROR, (int) convertFontSizeForWindows(20D));
         // Server.
         StyleConstants.setBold(ATTR_SERVER, true);
-        StyleConstants.setFontSize(ATTR_SERVER, (int) convertFontSizeForWindows(25D));
+        StyleConstants.setForeground(ATTR_SERVER, new Color(230, 90, 90));
+        StyleConstants.setFontSize(ATTR_SERVER, (int) convertFontSizeForWindows(20D));
 
     }
 
@@ -121,35 +125,43 @@ public class Application
     private void setDialogs()
     {
         UIManager.put("OptionPane.messageFont", new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(30D)));
-        UIManager.put("OptionPane.buttonFont", new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(25D)));
-        UIManager.put("TextField.font", new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(25D)));
+        UIManager.put("OptionPane.buttonFont", new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(20D)));
+        UIManager.put("TextField.font", new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(20D)));
+        UIManager.put("Panel.background", new Color(30, 30, 30));
+        UIManager.put("Label.foreground", new Color(225, 225, 225));
+        UIManager.put("Button.background", new Color(60, 60, 60));
+        UIManager.put("Button.foreground", new Color(225, 225, 225));
+        UIManager.put("TextField.background", new Color(30, 30, 30));
+        UIManager.put("TextField.foreground", new Color(225, 225, 225));
+        UIManager.put("OptionPane.background",new ColorUIResource(30, 30, 30));
+        UIManager.put("OptionPane.foreground",new ColorUIResource(225, 225, 225));
+
     }
 
     private void createFrame()
     {
-        mFrame = new JFrame("Chat console");
-
+        mFrame = new JFrame("CrowdChat");
         Container container = mFrame.getContentPane();
         container.setLayout(new BorderLayout());
         container.add(getRightPanel(), BorderLayout.CENTER);
         container.add(getLeftPanel(), BorderLayout.WEST);
 
+
         // On exit.
         mFrame.addWindowListener(new java.awt.event.WindowAdapter() 
+        {
+            // Can't use lambda.
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) 
+            {
+                if (mClient.isConnected())
                 {
-                    // Can't use lambda.
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent windowEvent) 
-                    {
-                        if (mClient.isConnected())
-                        {
-                            mClient.disconnect();
-                        }
-
-                        System.exit(0);
-                    }
+                    mClient.disconnect();
                 }
-        );
+
+                System.exit(0);
+            }
+        });
         // App icon.
         mFrame.setIconImage(mIcon);
         // Show on top.
@@ -191,6 +203,7 @@ public class Application
         constraints3.anchor = GridBagConstraints.PAGE_END;
 
         JPanel leftPanel = new JPanel(new GridBagLayout());
+
         leftPanel.add(getIconPanel(), constraints1); 
         leftPanel.add(getUsersPanel(), constraints2); 
         leftPanel.add(getCommandsPanel(), constraints3); 
@@ -231,8 +244,10 @@ public class Application
         // Message list.
         mChatArea = new JTextPane();
         mChatArea.setMargin(new Insets(20, 20, 20, 20));
-        mChatArea.setFont(new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(25D)));
+        mChatArea.setFont(new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(20D)));
         mChatArea.setEditable(false);
+        mChatArea.setBackground(new Color(30, 30, 30));
+        mChatArea.setForeground(new Color(225, 225, 225));
         addToChat("Welcome on CrowdChat.\n" +
                 "You can log in using the button at the bottom left.\n\n",
                 ATTR_ITALIC); 
@@ -254,13 +269,16 @@ public class Application
         // User input.
         JTextField textField = new JTextField();
         textField.setMargin(new Insets(20, 20, 20, 20));
-        textField.setFont(new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(25D)));
+        textField.setFont(new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(20D)));
         textField.addActionListener(onSendInput(textField));
+        textField.setBackground(new Color(30, 30, 30));
+        textField.setForeground(new Color(225, 225, 225));
         // Send button.
         JButton button = new JButton("SEND");
-        button.setBackground(new Color(255, 255, 255));
-        button.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(25D)));
+        button.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(20D)));
         button.addActionListener(onSendInput(textField));
+        button.setBackground(new Color(60, 60, 60));
+        button.setForeground(new Color(225, 225, 225));
 
         // User input
         GridBagConstraints constraints1 = new GridBagConstraints();
@@ -292,7 +310,7 @@ public class Application
             if (! mClient.isConnected())
             {
                 addToChat("[Server]: Please log in to " +
-                       "send messages.", ATTR_SERVER);  
+                       "send messages.", ATTR_ERROR);  
                 textField.setText("");
                 return ;
             }
@@ -323,7 +341,7 @@ public class Application
         // App title.
         String APP_NAME = "CrowdChat";
         JLabel label1 = new JLabel(APP_NAME, SwingConstants.CENTER);
-        label1.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(60D)));
+        label1.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(50D)));
         label1.setForeground(new Color(250, 65, 65));
         JPanel panel_ = new JPanel(); // To force margins...
         panel_.setBorder(new EmptyBorder(40, 40, 80, 40));
@@ -346,20 +364,27 @@ public class Application
         JPanel panel_ = new JPanel(); // To force margins...
         panel_.setBorder(new EmptyBorder(0, 0, 20, 0));
         panel_.add(label);
+
         // User names.
         mUserList = new DefaultListModel<>();
         JList<String> list = new JList<>(mUserList);
         list.setBorder(new EmptyBorder(40, 40, 40, 20));
-        list.setFont(new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(25D)));
+        list.setFont(new Font(FONT, Font.PLAIN, (int) convertFontSizeForWindows(20D)));
         list.setVisibleRowCount(8);
 
         JScrollPane scrollPane = new JScrollPane(list);
 
         JPanel panel = new JPanel(new BorderLayout());
+        list.setBackground(new Color(30, 30, 30));
+        list.setForeground(new Color(225, 225, 225));
+        scrollPane.setBackground(new Color(30, 30, 30));
+        scrollPane.setForeground(new Color(225, 225, 225));
+
         panel.setBorder(new EmptyBorder(40, 40, 20, 20));
         panel.add(panel_, BorderLayout.NORTH);
         panel.add(scrollPane, BorderLayout.CENTER);
-
+        
+        
         return panel;
     }
 
@@ -373,15 +398,17 @@ public class Application
         JButton button2 = new JButton("DISCONNECT");
 
         // Connect button.
-        button1.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(25D)));
+        button1.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(20D)));
         button1.addActionListener(onConnection(button1, button2));
         button1.setEnabled(true);
-        button1.setBackground(new Color(255, 255, 255));
+        button1.setBackground(new Color(60, 60, 60));
+        button1.setForeground(new Color(225, 225, 225));
         // Disconnect button.
-        button2.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(25D)));
+        button2.setFont(new Font(FONT, Font.BOLD, (int) convertFontSizeForWindows(20D)));
         button2.addActionListener(onDisconnection(button1, button2));
         button2.setEnabled(false);
-        button2.setBackground(new Color(255, 255, 255));
+        button2.setBackground(new Color(30, 30, 30));
+        button2.setForeground(new Color(225, 225, 225));
         // Connect button.
         GridBagConstraints constraints1 = new GridBagConstraints();
         constraints1.weightx = 0.5;
@@ -413,7 +440,7 @@ public class Application
             // Ask for user pseudo.
             // Build a pop up dialog:
             String name = JOptionPane.showInputDialog(mFrame, 
-                    "Please enter your name:", "Connect",
+                    "", "Enter the username",
                     JOptionPane.PLAIN_MESSAGE);
 
             // Try to connect on server.
@@ -425,6 +452,8 @@ public class Application
                     {
                         connectButton.setEnabled(false);
                         disconnectButton.setEnabled(true);
+                        connectButton.setBackground(new Color(30, 30, 30));
+                        disconnectButton.setBackground(new Color(60, 60, 60));
                     }
                 }
                 else
@@ -441,19 +470,12 @@ public class Application
     {
         return e -> 
         {
-            // Ask for confirmation.
-            // Build a pop up dialog:
-            int input = JOptionPane.showConfirmDialog(mFrame,
-                    "Click ok if you want to log out.", "Disconnect", 
-                    JOptionPane.DEFAULT_OPTION);
-
-            if (input == 0)
-            {
-                // Disconnect on server.
-                mClient.disconnect();
-                connectButton.setEnabled(true);
-                disconnectButton.setEnabled(false);
-            }
+            // Disconnect on server.
+            mClient.disconnect();
+            connectButton.setEnabled(true);
+            disconnectButton.setEnabled(false);
+            connectButton.setBackground(new Color(30, 30, 30));
+            disconnectButton.setBackground(new Color(60, 60, 60));
         };
     }
 
